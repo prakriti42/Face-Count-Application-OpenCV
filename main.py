@@ -1,18 +1,17 @@
+# Author : Prakriti Regmi 
+# A simple Face Counter Application made using open cv and Haarcascade algorithm
+
 import cv2
-
-
 
 # Loading the dataset into the model and create a classifier 
 def load_dataset():
     dataset = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
     return dataset
 
-#Chossing image to detect face
+#Chosing the current frame  to detect face
 
-def Displayimage(img):
-   # img = cv2.imread('face3.jpg') #reading an image in 2D-array Source Image  
-    # frame_read , img = webcam.read()
-
+def DisplayFrameData(img):
+ 
     # get dimensions of image
     dimensions = img.shape
     
@@ -32,72 +31,55 @@ def Displayimage(img):
  
 
 
-#The Algorithm requires it to be gray scale 
+#Function to conver the captured frame in to grayscale  
 def GrayScaleImage(Image):
     grayscaleImg = cv2.cvtColor(Image, cv2.COLOR_BGR2GRAY)
     DetectFace(grayscaleImg , Image)
  
-
-# def resize(img):
-    
-#     print('Original Dimensions : ',img.shape)
-    
-#     scale_percent = 40 # percent of original size
-#     width = int(img.shape[1] * scale_percent / 100)
-#     height = int(img.shape[0] * scale_percent / 100)
-#     dim = (width, height)
-    
-#     # resize image
-#     resized = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
-#     #cv2.imshow("Image", resized)
-   
-#     print('Resized Dimensions : ',resized.shape)
-#     grayscaleImg = cv2.cvtColor(resized, cv2.COLOR_BGR2GRAY)
-  
-
-#     DetectFace(grayscaleImg , resized)
-#     return resized
-   
-    
-  
-
-
-
+#Function to detect the face in the captured frame
 def DetectFace(grayscaleImg , ColoredImage):
+    
     dataset = load_dataset()
     
     Image = grayscaleImg
     theCoordinates = dataset.detectMultiScale(grayscaleImg)
-   
+    # the type of font
+    # to be used.
+    font = cv2.FONT_HERSHEY_SIMPLEX
     def DrawRectangle(Image, coordinates):
         print(theCoordinates) 
-        #Drawing Rectangle
+        #Drawing Rectangle and writing the result in text 
         for (x, y, w, h) in theCoordinates:
             cv2.rectangle(Image, (x, y), (x + w, y + h), (255,255, 255, 10))
+            cv2.putText(Image,("Faces Recognized : "+ str(len(theCoordinates))),(50, 50), font, 1, (0, 255, 255), 2, cv2.LINE_4)
    
     DrawRectangle(ColoredImage, theCoordinates)
     cv2.imshow("Face Detector", ColoredImage)
-    key = cv2.waitKey(1)
    
-    print('Number of Faces Detected : ',len(theCoordinates))
+    print(key)
+   # print('Number of Faces Detected : ',len(theCoordinates))
+ 
+   
     
 
 
-
-
-webcam = cv2.VideoCapture(0) #capturing image from webcam
-key = 0
 
 while True:
-
-    webcam = cv2.VideoCapture(0) #capturing image from webcam
-    
+    # Capture the frame from the default camera
+    webcam = cv2.VideoCapture(0) 
+    key = 0
     frame_read , img = webcam.read()
-    Displayimage(img)
+    
+    DisplayFrameData(img)
+    key = cv2.waitKey(9)
     if key== 81 or key == 113:
+        # close all windows
+        cv2.destroyAllWindows()
+        webcam.release()
+        print("App Terminated")
         break
   
-    webcam.release()
+    
    
 
 
