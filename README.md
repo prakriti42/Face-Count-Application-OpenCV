@@ -6,7 +6,6 @@ This repository consists of the python script for detecting the number of faces 
 
 
 ### System Overview 
-
 The system consists of a python script that includes the necessary functions nedded to implement the face detection model with the use of exsiting Haarcascade algorithm along with its pre-trained dataset available at [this link](https://github.com/opencv/opencv/blob/master/data/haarcascades/haarcascade_frontalface_alt.xml). 
 
 
