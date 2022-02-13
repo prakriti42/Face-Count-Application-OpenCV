@@ -26,6 +26,7 @@ def DisplayFrameData(img):
     print('Number of Channels : ',channels)
     
     #Grayscale the Frame 
+    
     GrayScaleImage(img)
    
  
